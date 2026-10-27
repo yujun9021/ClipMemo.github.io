@@ -14,7 +14,7 @@ export default defineConfig({
     transformIndexHtml(html) {
       const release = JSON.parse(readFileSync(new URL('./public/release.json', import.meta.url), 'utf8'));
       if (!/^\d+\.\d+\.\d+$/.test(release.version) ||
-          release.url !== `/downloads/ClipMemo-v${release.version}-win-x64.exe` ||
+          release.kind !== 'installer' || release.url !== `/downloads/ClipMemoSetup-v${release.version}-win-x64.exe` ||
           release.checksumUrl !== release.url + '.sha256' ||
           !Number.isSafeInteger(release.bytes) || release.bytes < 1 ||
           !/^[a-f0-9]{64}$/.test(release.sha256)) throw new Error('Invalid ClipMemo release metadata');

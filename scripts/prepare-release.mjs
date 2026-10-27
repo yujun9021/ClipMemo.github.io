@@ -4,11 +4,18 @@ import { resolve, basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-// Copy the executable alone; generate its checksum without exposing the app folder.
-const source = resolve(process.argv[2] || join(root, '../ClipMemo/dist/ClipMemo-v1.5.0-win-x64/ClipMemo.exe'));
+// Publish only the setup and its checksum, never the payload directory or user data.
+let sourcePath = process.argv[2];
+if (!sourcePath) {
+  const versionSource = await readFile(join(root, '../ClipMemo/src/AssemblyInfo.cs'), 'utf8');
+  const current = /AssemblyInformationalVersion\("(\d+\.\d+\.\d+)"\)/.exec(versionSource);
+  if (!current) throw new Error('App version is missing; provide the release EXE path explicitly.');
+  sourcePath = join(root, `../ClipMemo/dist/ClipMemo-v${current[1]}-win-x64/ClipMemoSetup.exe`);
+}
+const source = resolve(sourcePath);
 const match = /^ClipMemo-v(\d+\.\d+\.\d+)-win-x64$/.exec(basename(dirname(source)));
-if (!match || basename(source) !== 'ClipMemo.exe') throw new Error('Expected ClipMemo-vX.Y.Z-win-x64/ClipMemo.exe');
-const name = `ClipMemo-v${match[1]}-win-x64.exe`;
+if (!match || basename(source) !== 'ClipMemoSetup.exe') throw new Error('Expected ClipMemo-vX.Y.Z-win-x64/ClipMemoSetup.exe');
+const name = `ClipMemoSetup-v${match[1]}-win-x64.exe`;
 const bytes = await readFile(source);
 const pe = bytes.length >= 64 ? bytes.readUInt32LE(0x3c) : -1;
 if (bytes.toString('ascii', 0, 2) !== 'MZ' || pe < 64 || pe + 6 > bytes.length ||
@@ -19,7 +26,7 @@ await mkdir(destination, { recursive: true });
 await copyFile(source, join(destination, name));
 await writeFile(join(destination, name + '.sha256'), `${sha256}  ${name}\n`);
 const metadata = {
-  version: match[1], platform: 'Windows x64', bytes: bytes.length, sha256,
+  version: match[1], kind: 'installer', platform: 'Windows x64', bytes: bytes.length, sha256,
   filename: name, url: '/downloads/' + name, checksumUrl: '/downloads/' + name + '.sha256',
 };
 await writeFile(join(root, 'public/release.json'), JSON.stringify(metadata, null, 2) + '\n');

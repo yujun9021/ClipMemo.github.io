@@ -1,9 +1,10 @@
 {
-  "version": "1.5.0",
+  "version": "1.6.3",
+  "kind": "installer",
   "platform": "Windows x64",
-  "bytes": 1210880,
-  "sha256": "39fbcc68cec09b7060c4090ad98a125870bdf6353562f3bf51255b787c990f47",
-  "filename": "ClipMemo-v1.5.0-win-x64.exe",
-  "url": "/downloads/ClipMemo-v1.5.0-win-x64.exe",
-  "checksumUrl": "/downloads/ClipMemo-v1.5.0-win-x64.exe.sha256"
+  "bytes": 505856,
+  "sha256": "b5692a9b97af7d8841dad550cd575da8239f3a3d9b73f94356a8bd6e20154fff",
+  "filename": "ClipMemoSetup-v1.6.3-win-x64.exe",
+  "url": "/downloads/ClipMemoSetup-v1.6.3-win-x64.exe",
+  "checksumUrl": "/downloads/ClipMemoSetup-v1.6.3-win-x64.exe.sha256"
 }

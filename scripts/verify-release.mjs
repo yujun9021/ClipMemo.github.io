@@ -5,8 +5,8 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const release = JSON.parse(await readFile(join(root, 'public/release.json'), 'utf8'));
 const files = await readdir(join(root, 'public/downloads'));
-if (files.some(name => !/^ClipMemo-v\d+\.\d+\.\d+-win-x64\.exe(\.sha256)?$/.test(name))) throw new Error('Unexpected public download file');
-if (!/^\d+\.\d+\.\d+$/.test(release.version) || release.filename !== `ClipMemo-v${release.version}-win-x64.exe` ||
+if (files.some(name => !/^ClipMemoSetup-v\d+\.\d+\.\d+-win-x64\.exe(\.sha256)?$/.test(name))) throw new Error('Unexpected public download file');
+if (release.kind !== 'installer' || !/^\d+\.\d+\.\d+$/.test(release.version) || release.filename !== `ClipMemoSetup-v${release.version}-win-x64.exe` ||
     release.url !== '/downloads/' + release.filename || release.checksumUrl !== release.url + '.sha256') throw new Error('Invalid executable release metadata');
 const bytes = await readFile(join(root, 'public', release.url));
 const checksum = await readFile(join(root, 'public', release.checksumUrl), 'utf8');

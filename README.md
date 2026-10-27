@@ -1,6 +1,6 @@
 # ClipMemo Web
 
-ClipMemo의 한국어 소개·다운로드 페이지입니다. Vite + HTML/CSS/JavaScript 정적 사이트이며, 로그인·DB·서버 함수가 없습니다. Windows 앱의 Supabase 구성은 이 사이트와 별개입니다.
+ClipMemo 로컬 전용 버전의 한국어 소개·다운로드 페이지입니다. Vite + HTML/CSS/JavaScript 정적 사이트이며, 로그인·DB·서버 함수가 없습니다. 앱의 메모와 복사 기록도 PC에만 저장됩니다.
 
 ## 개발
 
@@ -16,15 +16,15 @@ npm run dev
 
 ## 다운로드 갱신
 
-기본 배포본은 ClipMemo 1.5.0 Windows x64입니다. 버전별 배포 폴더의 `ClipMemo.exe`가 준비된 후 실행합니다.
+준비한 배포본은 ClipMemo 1.6.3 Windows x64 로컬 전용 버전입니다. 버전별 배포 폴더의 `ClipMemoSetup.exe`가 준비된 후 실행합니다. 경로를 생략하면 형제 ClipMemo 프로젝트의 AssemblyInfo.cs에서 현재 버전을 읽습니다.
 
 ```powershell
-npm run release -- "C:\Study\lab\ClipMemo\dist\ClipMemo-v1.5.1-win-x64\ClipMemo.exe"
+npm run release -- "C:\Study\lab\ClipMemo\dist\ClipMemo-v1.6.3-win-x64\ClipMemoSetup.exe"
 npm run verify
 npm run build
 ```
 
-버전·이름·크기·SHA-256·다운로드 경로의 기준은 `public/release.json`입니다. 스크립트가 원본 EXE의 Windows x64 형식을 확인하고 SHA-256을 계산한 뒤 실행 파일만 복사하고 해시 파일과 이 정보를 갱신합니다. 서버 파일명에는 버전을 붙이며 브라우저에는 `ClipMemo.exe`로 저장하도록 안내합니다. Vite가 개발 서버·빌드에서 이 정보를 HTML에 직접 반영하므로 모든 다운로드 링크와 버전 표시가 함께 바뀝니다. JavaScript가 꺼져 있어도 동일한 버전의 다운로드와 안내를 사용할 수 있습니다. 이전 버전 파일은 보존됩니다.
+버전·이름·크기·SHA-256·다운로드 경로의 기준은 `public/release.json`입니다. 스크립트가 원본 EXE의 Windows x64 형식을 확인하고 SHA-256을 계산한 뒤 설치 파일만 복사하고 해시 파일과 이 정보를 갱신합니다. 서버 파일명에는 버전을 붙이며 브라우저에는 `ClipMemoSetup.exe`로 저장하도록 안내합니다. Vite가 개발 서버·빌드에서 이 정보를 HTML에 직접 반영하므로 모든 다운로드 링크와 버전 표시가 함께 바뀝니다. JavaScript가 꺼져 있어도 동일한 버전의 다운로드와 안내를 사용할 수 있습니다. 이전 포터블 다운로드는 공개 폴더에서 제외하고 .release-archive에 보관합니다.
 
 `npm run verify`는 파일 크기와 해시, 공개 다운로드 파일 이름, Windows x64 실행 파일 형식을 확인합니다. 앱 소스·실제 메모·토큰·촬영 저장소는 공개 폴더에 복사하지 않습니다.
 
@@ -63,4 +63,13 @@ npm run build
 
 앱 기능 테스트는 수행하지 않았으며, 앱 실행은 공개용 이미지 촬영에 한정했습니다.
 
-이전 웹 배포용 ZIP은 공개 폴더에서 제외하고 로컬의 .release-archive에 보관했습니다. 기존 Windows 앱 배포 폴더와 ZIP 원본은 유지합니다.
+이전 동기화 버전의 EXE와 웹 배포용 ZIP은 공개 폴더에서 제외하고 로컬의 .release-archive에 보관했습니다. 기존 Windows 앱 배포 폴더와 원본은 유지합니다. 현재 공개 다운로드는 로컬 전용 1.6.3 설치 파일입니다. 사용자의 배포 요청에 따라 GitHub Pages 워크플로로 반영합니다. 에이전트는 설치·제거·앱 실행 테스트를 수행하지 않았습니다.
+
+## 설치 파일 갱신 흐름 (1.6.2부터)
+
+1. 형제 ClipMemo 폴더에서 AssemblyInfo.cs와 app.manifest의 버전을 올립니다.
+2. ClipMemo 폴더에서 `.\package.ps1`을 실행해 앱 페이로드와 ClipMemoSetup.exe를 만듭니다.
+3. 이 폴더에서 `npm run release` → `npm run verify` → `npm run build`를 실행합니다.
+4. 사용자가 설치·업데이트·메모 보관·제거를 확인한 뒤 웹 변경을 커밋하고 main에 push합니다. 자동으로 공개하지 않습니다.
+
+웹 공개 폴더에는 Setup EXE와 해시만 둡니다. 실제 앱은 설치할 때 %LOCALAPPDATA%\Programs\ClipMemo에 복사되며 메모는 %LOCALAPPDATA%\ClipMemo에 유지됩니다. 제거 시 다운로드한 설치 파일은 지워지지 않습니다. 이전 앱 EXE를 웹 릴리스로 지정하면 스크립트가 거부합니다. 설치본과 웹의 버전은 1.6.3입니다. 설치·제거의 실제 실행 확인은 사용자가 수행합니다.
