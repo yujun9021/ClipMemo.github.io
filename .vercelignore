@@ -1,0 +1,5 @@
+.capture
+.release-archive
+docs/previews
+node_modules
+.git
