@@ -28,14 +28,24 @@ npm run build
 
 `npm run verify`는 파일 크기와 해시, 공개 다운로드 파일 이름, Windows x64 실행 파일 형식을 확인합니다. 앱 소스·실제 메모·토큰·촬영 저장소는 공개 폴더에 복사하지 않습니다.
 
-## Vercel 연결
+## GitHub Pages 배포
+
+현재 사이트 주소는 https://yujun9021.github.io/ClipMemo.github.io/ 입니다.
+
+저장소 **Settings → Pages → Build and deployment → Source**는 반드시 **GitHub Actions**로 설정합니다. **Deploy from a branch → main → /(root)**는 Vite 소스를 그대로 공개하므로 CSS·이미지·다운로드가 깨집니다.
+
+`.github/workflows/pages.yml`이 `main` 변경 또는 Actions의 수동 실행 시 의존성 설치 → EXE 검증 → Vite 빌드 → `dist` 업로드·배포를 처리합니다. `actions/configure-pages`가 알려준 실제 경로를 `PAGES_BASE_PATH`로 전달하므로 저장소 이름이나 사용자 도메인이 바뀌어도 이미지·CSS·다운로드 경로를 함께 맞춥니다. Pages 설정 자체에서 주소를 바꾼 경우 워크플로를 다시 실행합니다.
+
+새 버전은 위의 다운로드 갱신 명령을 실행한 후 변경된 EXE·해시·`public/release.json`을 함께 커밋하고 `main`에 push하면 배포됩니다. `dist`는 직접 커밋하지 않습니다. `node_modules`, `.capture`, `.release-archive`와 개발용 파일은 빌드 산출물에 포함되지 않습니다.
+
+## Vercel 연결 (대안)
 
 1. 이 폴더를 Git 저장소에 올리고 Vercel에서 Import합니다. 상위 저장소를 연결한다면 Root Directory를 `ClipMemo-Web`으로 지정합니다.
 2. Framework Preset은 **Vite**, Build Command는 `npm run build`, Output Directory는 `dist`입니다. `vercel.json`에 같은 구성을 제공합니다.
 3. Node.js는 22.x 이상으로 설정합니다. 환경변수·Supabase 키·DB 연결은 필요 없습니다.
 4. 배포 후 메인 화면, 모바일 화면, 다운로드 EXE, SHA-256 링크를 확인합니다.
 
-`public/images`, `public/downloads`, `public/release.json`과 `package-lock.json`을 함께 커밋해야 합니다. `node_modules`, `dist`, `.capture`, `.vercel`은 제외합니다. 이 작업에서는 실제 Vercel 배포·도메인 연결을 하지 않았습니다.
+`public/images`, `public/downloads`, `public/release.json`과 `package-lock.json`을 함께 커밋해야 합니다. `node_modules`, `dist`, `.capture`, `.vercel`은 제외합니다. Vercel에서는 `PAGES_BASE_PATH`를 설정하지 않아 루트 경로를 사용합니다.
 
 ## 이미지와 촬영
 
