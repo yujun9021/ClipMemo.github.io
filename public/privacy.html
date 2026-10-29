@@ -64,7 +64,7 @@
 </nav>
 <section id="ko-scope">
 <h2>적용 범위와 처리 주체</h2>
-<p>이유준은 「개인정보 보호법」 제30조와 개인정보보호위원회 작성지침의 기재 항목을 참고해 Clip Memo(ClipMemo) 로컬 전용 Windows 앱과 소개·다운로드 웹사이트의 실제 정보 처리 방식을 안내합니다. 웹 설치본과 Microsoft Store판에 적용되며 로그인·클라우드 동기화가 있는 별도 버전에는 적용되지 않습니다.</p>
+<p>이유준은 「개인정보 보호법」 제30조와 개인정보보호위원회 작성지침의 기재 항목을 참고해 Clip Memo(ClipMemo) 로컬 전용 Windows 앱과 소개·다운로드 웹사이트의 실제 정보 처리 방식을 안내합니다. Microsoft Store에서 제공하는 앱을 기준으로 하며 로그인·클라우드 동기화 기능은 포함하지 않습니다.</p>
 <p>앱은 사용자의 PC에서 메모를 작성·저장하고 클립보드를 기록하는 도구입니다. 개발자는 앱을 통해 메모나 복사 기록을 서버로 제출받지 않으며, 이를 보관하는 회원·메모 서버를 운영하지 않습니다. 앱에서 데이터를 처리하는 것과 개발자가 데이터를 수신하는 것은 구분됩니다.</p>
 </section>
 <section id="ko-data">
@@ -120,15 +120,15 @@
 <li>
 <strong>설정·오류·복구용 사본:</strong> 사용자가 데이터 폴더를 삭제하거나, 해당 파일을 교체·정리하는 앱 동작이 수행될 때까지. 오류 로그와 수동 백업에는 별도 자동 만료 기간을 설정하지 않습니다.</li>
 </ul>
-<p>현재 위치는 <strong>설정 → 데이터 폴더 열기</strong>에서 확인합니다. 웹 설치본 기본 위치는 <code>%LOCALAPPDATA%\ClipMemo</code>, 스토어판은 <code>%LOCALAPPDATA%\Packages\&lt;패키지 패밀리 이름&gt;\LocalState\ClipMemo</code>입니다. 사용자 지정 저장소나 이전 버전 저장소를 이어 쓰는 경우 실제 위치가 다를 수 있습니다.</p>
+<p>현재 위치는 <strong>설정 → 데이터 폴더 열기</strong>에서 확인합니다. 기본 저장 위치는 <code>%LOCALAPPDATA%\Packages\&lt;패키지 패밀리 이름&gt;\LocalState\ClipMemo</code>입니다. 사용자 지정 저장소나 이전 버전 저장소를 이어 쓰는 경우 실제 위치가 다를 수 있습니다.</p>
 </section>
 <section id="ko-deletion">
 <h2>파기 절차와 방법</h2>
 <p>메모 메뉴의 영구 삭제와 복사 기록의 삭제 버튼은 해당 목록과 연결 파일을 삭제합니다. 만료 기록도 앱에서 같은 정리 절차를 수행합니다. 삭제 시 저장·파일 권한 오류가 발생하면 정리가 완료되지 않을 수 있으므로 오류 안내와 데이터 폴더를 확인하세요.</p>
 <p>전체 데이터를 지우려면 앱을 완전히 종료한 뒤 실제 데이터 폴더 전체를 삭제하세요. 별도로 만든 백업, Windows나 백업 프로그램의 사본은 따로 삭제해야 합니다. 앱의 일반 파일 삭제는 복구를 방지하는 보안 덮어쓰기를 의미하지 않습니다.</p>
 <aside>
-<strong>제거 방식의 차이</strong>
-<p>웹 설치본은 제거 화면의 ‘메모와 앱 데이터도 함께 삭제’를 체크해야 데이터를 함께 삭제합니다. 기본값은 메모 보관입니다. <strong>스토어판은 앱 제거·초기화 시 해당 패키지의 메모와 설정도 삭제됩니다.</strong> 중요한 메모는 먼저 별도로 백업하세요.</p>
+<strong>앱 제거·초기화 시 주의</strong>
+<p><strong>앱 제거·초기화 시 메모와 설정도 삭제됩니다.</strong> 중요한 메모는 먼저 별도로 백업하세요.</p>
 </aside>
 <p>개발자는 사용자 PC의 데이터를 원격으로 보관하거나 파기하지 않습니다.</p>
 </section>
@@ -247,7 +247,7 @@
 </nav>
 <section id="en-scope">
 <h2>Scope and operator</h2>
-<p>Yujun Lee (이유준) publishes this policy for the local-only Clip Memo (ClipMemo) Windows app and its information/download website. It covers the website installer and Microsoft Store edition, not separate editions with accounts or cloud synchronization.</p>
+<p>Yujun Lee (이유준) publishes this policy for the local-only Clip Memo (ClipMemo) Windows app and its information/download website. It covers the app distributed through Microsoft Store. The app has no accounts or cloud synchronization.</p>
 <p>The app edits notes and keeps clipboard history on your PC. The developer does not receive this content through an app server or operate an account/note database for this edition. Local app processing is distinct from sending data to the developer.</p>
 </section>
 <section id="en-data">
@@ -303,15 +303,15 @@
 <li>
 <strong>Preferences, errors and recovery copies:</strong> until you delete the data folder or the app replaces/cleans up those files. Error logs and manual backups have no separate automatic expiry.</li>
 </ul>
-<p>Find your current location under <strong>Settings → Open data folder</strong>. The website installation defaults to <code>%LOCALAPPDATA%\ClipMemo</code>; the Store edition uses <code>%LOCALAPPDATA%\Packages\&lt;package family name&gt;\LocalState\ClipMemo</code>. A custom or legacy location may differ.</p>
+<p>Find your current location under <strong>Settings → Open data folder</strong>. The default data location is <code>%LOCALAPPDATA%\Packages\&lt;package family name&gt;\LocalState\ClipMemo</code>. A custom or legacy location may differ.</p>
 </section>
 <section id="en-deletion">
 <h2>Deletion procedure and method</h2>
 <p>The permanent note deletion command and clipboard delete button remove the item and its linked files. Expired history uses the same cleanup process. Save/permission errors can prevent cleanup; check any error notice and your data folder.</p>
 <p>To remove all data, quit the app completely and delete its actual data folder. Manage separate backups and copies made by Windows or backup tools separately. Ordinary file deletion is not secure overwriting that prevents recovery.</p>
 <aside>
-<strong>Uninstall behavior differs</strong>
-<p>The website installer keeps notes by default; select “Also delete notes and app data” to remove them. <strong>Uninstalling or resetting the Store edition removes its package's notes and preferences.</strong> Back up important notes first.</p>
+<strong>Before uninstalling or resetting the app</strong>
+<p><strong>Uninstalling or resetting the app removes its notes and preferences.</strong> Back up important notes first.</p>
 </aside>
 <p>The developer does not remotely store or erase your PC's data.</p>
 </section>
