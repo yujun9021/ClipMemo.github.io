@@ -7,8 +7,7 @@
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "release": "node scripts/prepare-release.mjs",
-    "verify": "node scripts/verify-release.mjs"
+    "verify": "node scripts/verify-store.mjs"
   },
   "engines": {
     "node": ">=22.12.0"

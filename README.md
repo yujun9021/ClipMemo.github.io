@@ -1,84 +1,25 @@
-# ClipMemo Web
+# ClipMemo 웹사이트
 
-ClipMemo 로컬 전용 버전의 한국어 소개·다운로드 페이지입니다. Vite + HTML/CSS/JavaScript 정적 사이트이며, 로그인·DB·서버 함수가 없습니다. 앱의 메모와 복사 기록도 PC에만 저장됩니다.
+ClipMemo 소개와 Microsoft Store 다운로드 안내를 제공하는 Vite 정적 사이트입니다. 로그인·DB·서버 함수는 없습니다.
 
-## 개발
-
-Node.js 22.12 이상이 필요합니다.
+## 개발과 확인
 
 ```powershell
-cd C:\Study\lab\ClipMemo-Web
 npm ci
 npm run dev
-```
-
-콘솔에 표시된 로컬 주소를 브라우저에서 엽니다. `npm run build`로 `dist`를 만들고, `npm run preview`로 배포용 결과를 확인합니다.
-
-## 다운로드 갱신
-
-준비한 배포본은 ClipMemo 1.6.3 Windows x64 로컬 전용 버전입니다. 버전별 배포 폴더의 `ClipMemoSetup.exe`가 준비된 후 실행합니다. 경로를 생략하면 형제 ClipMemo 프로젝트의 AssemblyInfo.cs에서 현재 버전을 읽습니다.
-
-```powershell
-npm run release -- "C:\Study\lab\ClipMemo\dist\ClipMemo-v1.6.3-win-x64\ClipMemoSetup.exe"
 npm run verify
 npm run build
+npm run preview
 ```
 
-버전·이름·크기·SHA-256·다운로드 경로의 기준은 `public/release.json`입니다. 스크립트가 원본 EXE의 Windows x64 형식을 확인하고 SHA-256을 계산한 뒤 설치 파일만 복사하고 해시 파일과 이 정보를 갱신합니다. 서버 파일명에는 버전을 붙이며 브라우저에는 `ClipMemoSetup.exe`로 저장하도록 안내합니다. Vite가 개발 서버·빌드에서 이 정보를 HTML에 직접 반영하므로 모든 다운로드 링크와 버전 표시가 함께 바뀝니다. JavaScript가 꺼져 있어도 동일한 버전의 다운로드와 안내를 사용할 수 있습니다. 이전 포터블 다운로드는 공개 폴더에서 제외하고 .release-archive에 보관합니다.
-
-`npm run verify`는 파일 크기와 해시, 공개 다운로드 파일 이름, Windows x64 실행 파일 형식을 확인합니다. 앱 소스·실제 메모·토큰·촬영 저장소는 공개 폴더에 복사하지 않습니다.
+다운로드 주소는 `public/store.json` 한 곳에서 관리합니다. 메인 화면과 하단 버튼이 같은 Microsoft Store 페이지로 연결되며, 별도 설치 파일을 웹에 복사할 필요가 없습니다. 기존 EXE 준비 스크립트와 파일은 이전 배포 기록이며 현재 배포 절차에서 사용하지 않습니다.
 
 ## GitHub Pages 배포
 
-현재 사이트 주소는 https://yujun9021.github.io/ClipMemo.github.io/ 입니다.
+저장소 Settings → Pages → Source를 GitHub Actions로 설정합니다. `main`에 변경 내용을 push하면 `.github/workflows/pages.yml`이 의존성 설치, 링크 검증, Vite 빌드와 Pages 배포를 수행합니다. 실제 Pages 경로는 워크플로에서 빌드에 전달합니다. `dist`와 `node_modules`는 커밋하지 않습니다.
 
-저장소 **Settings → Pages → Build and deployment → Source**는 반드시 **GitHub Actions**로 설정합니다. **Deploy from a branch → main → /(root)**는 Vite 소스를 그대로 공개하므로 CSS·이미지·다운로드가 깨집니다.
+앱 업데이트는 Microsoft Store에 제출합니다. 스토어 제품 주소가 같으면 웹 다운로드 링크를 다시 바꿀 필요가 없습니다.
 
-`.github/workflows/pages.yml`이 `main` 변경 또는 Actions의 수동 실행 시 의존성 설치 → EXE 검증 → Vite 빌드 → `dist` 업로드·배포를 처리합니다. `actions/configure-pages`가 알려준 실제 경로를 `PAGES_BASE_PATH`로 전달하므로 저장소 이름이나 사용자 도메인이 바뀌어도 이미지·CSS·다운로드 경로를 함께 맞춥니다. Pages 설정 자체에서 주소를 바꾼 경우 워크플로를 다시 실행합니다.
+## 개인정보 처리방침
 
-새 버전은 위의 다운로드 갱신 명령을 실행한 후 변경된 EXE·해시·`public/release.json`을 함께 커밋하고 `main`에 push하면 배포됩니다. `dist`는 직접 커밋하지 않습니다. `node_modules`, `.capture`, `.release-archive`와 개발용 파일은 빌드 산출물에 포함되지 않습니다.
-
-## Vercel 연결 (대안)
-
-1. 이 폴더를 Git 저장소에 올리고 Vercel에서 Import합니다. 상위 저장소를 연결한다면 Root Directory를 `ClipMemo-Web`으로 지정합니다.
-2. Framework Preset은 **Vite**, Build Command는 `npm run build`, Output Directory는 `dist`입니다. `vercel.json`에 같은 구성을 제공합니다.
-3. Node.js는 22.x 이상으로 설정합니다. 환경변수·Supabase 키·DB 연결은 필요 없습니다.
-4. 배포 후 메인 화면, 모바일 화면, 다운로드 EXE, SHA-256 링크를 확인합니다.
-
-`public/images`, `public/downloads`, `public/release.json`과 `package-lock.json`을 함께 커밋해야 합니다. `node_modules`, `dist`, `.capture`, `.vercel`은 제외합니다. Vercel에서는 `PAGES_BASE_PATH`를 설정하지 않아 루트 경로를 사용합니다.
-
-## 이미지와 촬영
-
-앱 아이콘은 기존 ClipMemo 자산입니다. 대표·보조 이미지는 1.5.0 앱을 컴퓨터 유즈로 촬영한 실제 창이며, 모든 글과 그림은 공개용 샘플입니다. `.capture`의 별도 데이터 저장소를 사용했고 기존 사용자 메모와 계정은 사용하지 않았습니다.
-
-`scripts/prepare-capture.ps1 -Theme cream` 또는 `-Theme navy`로 샘플 문서와 그림을 준비할 수 있습니다. 기존 촬영 상태는 덮어쓰지 않습니다. 앱을 촬영할 때는 `--data-dir`에 해당 폴더를 지정하고 `--no-startup --foreground`를 사용합니다. 샘플은 수집 정지·로그아웃·자동 실행 해제로 준비되며 일반 호출 단축키와 다른 조합을 사용합니다. 촬영 후에는 해당 샘플 앱의 **설정 → 완전히 종료**로 닫습니다.
-
-## 수동 확인
-
-- 1440px 데스크톱과 390px 모바일에서 가로 넘침, 제목 줄바꿈, 이미지 비율과 메뉴를 확인합니다.
-- 상단/하단 다운로드 링크가 같은 버전 EXE를 받는지, 해시 링크가 해당 EXE의 해시인지 확인합니다.
-- 기능·사용법 앵커 이동, 키보드 Tab 포커스와 본문 바로가기를 확인합니다.
-- JavaScript를 꺼도 다운로드 버튼과 버전·사용법이 그대로 표시되는지 확인합니다.
-- 글꼴은 Noto Sans KR을 Google Fonts에서 불러오며 실패하면 맑은 고딕 등 시스템 글꼴을 사용합니다.
-
-앱 기능 테스트는 수행하지 않았으며, 앱 실행은 공개용 이미지 촬영에 한정했습니다.
-
-이전 동기화 버전의 EXE와 웹 배포용 ZIP은 공개 폴더에서 제외하고 로컬의 .release-archive에 보관했습니다. 기존 Windows 앱 배포 폴더와 원본은 유지합니다. 현재 공개 다운로드는 로컬 전용 1.6.3 설치 파일입니다. 사용자의 배포 요청에 따라 GitHub Pages 워크플로로 반영합니다. 에이전트는 설치·제거·앱 실행 테스트를 수행하지 않았습니다.
-
-## 설치 파일 갱신 흐름 (1.6.2부터)
-
-1. 형제 ClipMemo 폴더에서 AssemblyInfo.cs와 app.manifest의 버전을 올립니다.
-2. ClipMemo 폴더에서 `.\package.ps1`을 실행해 앱 페이로드와 ClipMemoSetup.exe를 만듭니다.
-3. 이 폴더에서 `npm run release` → `npm run verify` → `npm run build`를 실행합니다.
-4. 사용자가 설치·업데이트·메모 보관·제거를 확인한 뒤 웹 변경을 커밋하고 main에 push합니다. 자동으로 공개하지 않습니다.
-
-웹 공개 폴더에는 Setup EXE와 해시만 둡니다. 실제 앱은 설치할 때 %LOCALAPPDATA%\Programs\ClipMemo에 복사되며 메모는 %LOCALAPPDATA%\ClipMemo에 유지됩니다. 제거 시 다운로드한 설치 파일은 지워지지 않습니다. 이전 앱 EXE를 웹 릴리스로 지정하면 스크립트가 거부합니다. 설치본과 웹의 버전은 1.6.3입니다. 설치·제거의 실제 실행 확인은 사용자가 수행합니다.
-## 개인정보처리방침
-
-공개 주소: https://yujun9021.github.io/ClipMemo.github.io/privacy.html
-
-`public/privacy.html`에 한국어·영어를 함께 제공합니다. Microsoft Store 제출의 개인정보처리방침 URL에 위 주소를 입력합니다. 홈페이지 하단에도 링크가 있습니다. 정책 페이지는 JavaScript와 외부 웹폰트 없이 읽을 수 있으며 상대 경로로 CSS·아이콘·홈페이지를 연결합니다.
-
-로컬 앱의 메모·클립보드·설정·오류 기록, 보관/삭제, 암호화 미제공, Microsoft Store 앱의 데이터 위치와 제거·초기화 시 데이터 삭제, 문의 이메일 및 웹 호스팅·폰트 요청을 설명합니다. 시행일·수정일은 2026-10-29입니다. 기능이나 데이터 처리 방식이 바뀌면 날짜와 내용을 함께 갱신하세요. 앱 설정에서 방침 링크를 제공합니다. 다운로드 버전은 기존 1.6.3을 유지합니다.
-2026-10-29 개정: 사용자 제공 개인정보보호위원회 「개인정보 처리방침 작성지침」(2026.4.)의 항목과 공개 방식에 맞춰 목차·목적/항목·보관·파기·권리 행사·담당자·구제·변경 이력을 구분했습니다. 이전 방침은 public/privacy-history/2026-10-27.html에 적용기간과 함께 보존합니다. 문의 기능은 앱에서 이메일 주소 복사만 제공하며 개인 메일함 보관기간이나 문의 수집 기능을 추가하지 않았습니다. 앱 내부 방침 링크는 1.6.5부터 제공하되 웹 공개 다운로드는 사용자 확인 전까지 1.6.3입니다.
-개발 기준: 앞으로 MSIX와 Microsoft Store 배포를 기준으로 합니다. 현재 방침은 스토어 앱 기준이며, 이전 방침은 변경 이력에만 보존합니다. 기존 웹 다운로드는 스토어 공개 주소가 확정된 뒤 스토어 링크로 전환합니다.
+`public/privacy.html`에서 한국어·영어 방침을 제공합니다. 이전 방침은 `public/privacy-history`에 보존합니다. 앱 기능이나 데이터 처리 방식이 바뀌면 방침을 함께 검토합니다.
